@@ -3,12 +3,11 @@ package util
 import (
 	"bytes"
 	"strings"
-	"unicode/utf8"
 )
 
-// StrTable 获取可以展示表格的字符串
+// TableStr 获取可以展示表格的字符串
 // 当 colMaxWidth 为nil，花费时间来自动计算
-func StrTable(lines [][]string, colMaxWidth []int) string {
+func TableStr(lines [][]string, colMaxWidth []int) string {
 	// 获取列最小长度
 	if colMaxWidth == nil {
 		colMaxWidth = make([]int, 0, 16)
@@ -48,16 +47,4 @@ func StrTable(lines [][]string, colMaxWidth []int) string {
 		buffer.WriteString("\n")
 	}
 	return buffer.String()
-}
-
-// StrTerminalLen 获取字符串在终端中输出的长度
-// 例子：
-// 中文 => 4
-// en   => 2
-func StrTerminalLen(str string) int {
-	byteLen := len(str)
-	charLen := utf8.RuneCountInString(str)
-	chLen := (byteLen - charLen) / 2 // 1个中文 == 3个字节
-	enLen := charLen - chLen
-	return chLen*2 + enLen
 }
