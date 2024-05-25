@@ -51,6 +51,9 @@ func StrTable(lines [][]string, colMaxWidth []int) string {
 }
 
 // StrTerminalLen 获取字符串在终端中输出的长度
+// 例子：
+// 中文 => 4
+// en   => 2
 func StrTerminalLen(str string) int {
 	byteLen := len(str)
 	charLen := utf8.RuneCountInString(str)
