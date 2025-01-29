@@ -36,7 +36,10 @@ func Map2Struct(srcMap map[string]any, dstStructPointer interface{}) error {
 			// 设置结构体字段的值
 			fieldVal := val.Field(i)
 			if fieldVal.CanSet() {
-				fieldVal.Set(reflect.ValueOf(value))
+				// 先将value转换为字段的类型
+				convertedValue := reflect.ValueOf(value).Convert(fieldVal.Type())
+				// fieldVal.Set(reflect.ValueOf(value))
+				fieldVal.Set(convertedValue)
 			}
 		}
 	}
