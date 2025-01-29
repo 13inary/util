@@ -20,8 +20,8 @@ func ConvertModel(srcModel any, dstModelPointer any) error {
 	return nil
 }
 
-// map2Struct 对于结构体字段名，若map中有就拿过来覆盖
-func map2Struct(srcMap map[string]any, dstStructPointer interface{}) error {
+// Map2Struct 对于结构体字段名，若map中有就拿过来覆盖
+func Map2Struct(srcMap map[string]any, dstStructPointer interface{}) error {
 	// 获取结构体类型和字段
 	val := reflect.ValueOf(dstStructPointer).Elem()
 	typ := val.Type()
