@@ -17,6 +17,7 @@ import "sort"
 // 注意:
 //
 //	排序函数返回false都会触发元素更换位置，也就是大小比较用好等于号
+//	sortGroup有2个slice传进来，它们的长度>=1
 func GroupSort[T any](src []T, getGroupKey func(T) string, sortGroup func([]T, []T) bool, sortMember func(T, T) bool) []T {
 	groupKeys := make([]string, 0, len(src))
 
