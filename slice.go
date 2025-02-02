@@ -13,6 +13,10 @@ import "sort"
 // 返回值:
 //
 //	[]T - 返回按分组排序后的新切片
+//
+// 注意:
+//
+//	排序函数返回false都会触发元素更换位置，也就是大小比较用好等于号
 func GroupSort[T any](src []T, getGroupKey func(T) string, sortGroup func([]T, []T) bool, sortMember func(T, T) bool) []T {
 	groupKeys := make([]string, 0, len(src))
 
