@@ -2,6 +2,7 @@ package util
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -29,4 +30,24 @@ func LoopExecute(ctx context.Context, job func() error, interval time.Duration) 
 		}
 		timer.Reset(interval)
 	}
+}
+
+func TryDo(ctx context.Context, job func() (bool, error), maxTimes int) error {
+	var currentTimes int
+	var err error
+	var ok bool
+
+	for currentTimes < maxTimes {
+		ok, err = job()
+		if err != nil {
+			return err
+		}
+		if ok {
+			return nil
+		}
+
+		currentTimes++
+	}
+
+	return fmt.Errorf("The operation failed multiple times and has been terminated. Error : %v", err)
 }
