@@ -37,7 +37,7 @@ func TryDo(ctx context.Context, job func() (bool, error), maxTimes int) error {
 	var err error
 	var ok bool
 
-	for currentTimes < maxTimes {
+	for {
 		ok, err = job()
 		if err != nil {
 			return err
@@ -46,6 +46,9 @@ func TryDo(ctx context.Context, job func() (bool, error), maxTimes int) error {
 			return nil
 		}
 
+		if currentTimes >= maxTimes { // 不使用"for currentTimes < maxTimes {"是避免maxTimes为0的情况，导致一次都没有做
+			break
+		}
 		currentTimes++
 	}
 
