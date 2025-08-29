@@ -2,6 +2,7 @@ package util
 
 import (
 	"strconv"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -29,4 +30,28 @@ func Int2String(i int, suffix string) string {
 	b = strconv.AppendInt(b, int64(i), 10)
 	b = append(b, suffix...)
 	return string(b)
+}
+
+func HasPrefixs(str string, prefixs []string) bool {
+	if str == "" || len(prefixs) == 0 {
+		return false
+	}
+	for _, prefix := range prefixs {
+		if strings.HasPrefix(str, prefix) {
+			return true
+		}
+	}
+	return false
+}
+
+func HasSuffixs(str string, suffixs []string) bool {
+	if str == "" || len(suffixs) == 0 {
+		return false
+	}
+	for _, suffix := range suffixs {
+		if strings.HasSuffix(str, suffix) {
+			return true
+		}
+	}
+	return false
 }
