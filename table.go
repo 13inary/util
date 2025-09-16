@@ -6,6 +6,7 @@ import (
 )
 
 // TableStr 获取可以展示表格的字符串
+// 将多个line[]string，加入lines[][]string中
 // 当 colMaxWidth 为nil，花费时间来自动计算
 func TableStr(lines [][]string, colMaxWidth []int) string {
 	// 获取列最小长度
