@@ -64,3 +64,33 @@ func TrimZeroBytes(b []byte) []byte {
 
 	return b[start : end+1]
 }
+
+// RemoveAllZeroBytes 移除字节切片中的所有0x00值
+func RemoveAllZeroBytes(b []byte) []byte {
+	if len(b) == 0 {
+		return b
+	}
+
+	newB := make([]byte, 0, len(b))
+	for i := range b {
+		if b[i] == 0x00 {
+			continue
+		}
+		newB = append(newB, b[i])
+	}
+	return newB
+}
+
+// CutRightZeroBytes 一旦发现0x00值，立即切掉后面所有数据
+func CutRightZeroBytes(b []byte) []byte {
+	if len(b) == 0 {
+		return b
+	}
+
+	for i := range b {
+		if b[i] == 0x00 {
+			return b[:i]
+		}
+	}
+	return b
+}
