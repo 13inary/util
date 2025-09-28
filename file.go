@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/gob"
 	"os"
 )
 
@@ -53,4 +54,26 @@ func SyncAtomicWriteSmallFile(file string, content []byte, perm os.FileMode) err
 	}
 
 	return os.Rename(tmpName, file) // 对于目标已经存在，linux和mac直接覆盖，windows需要自己先删除后Rename
+}
+
+func SaveToCache[T any](data T, cacheFile string) error {
+	f, err := os.Create(cacheFile)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return gob.NewEncoder(f).Encode(data)
+}
+
+func LoadFromCache[T any](cacheFile string) (T, error) {
+	var data T
+
+	f, err := os.Open(cacheFile)
+	if err != nil {
+		return data, err
+	}
+	defer f.Close()
+
+	return data, gob.NewDecoder(f).Decode(&data)
 }
