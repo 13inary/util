@@ -66,6 +66,7 @@ func SaveToCache[T any](data T, cacheFile string) error {
 	return gob.NewEncoder(f).Encode(data)
 }
 
+// 缓存是否过期，由外部的函数判断
 func LoadFromCache[T any](cacheFile string) (T, error) {
 	var data T
 
