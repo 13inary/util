@@ -114,18 +114,18 @@ func HttpGetHtml(fullUrl string, headers map[string]string, params map[string]st
 	return buf.String(), nil
 }
 
-func GB180302UTF8(body io.ReadCloser) io.Reader {
+func HtmlGB180302UTF8(body io.ReadCloser) io.Reader {
 	//decoder := encoding.Nop.NewDecoder()
 	decoder := simplifiedchinese.GB18030.NewDecoder()
 	return transform.NewReader(body, decoder)
 }
 
-func GBK2UTF8(body io.ReadCloser) io.Reader {
+func HtmlGBK2UTF8(body io.ReadCloser) io.Reader {
 	decoder := simplifiedchinese.GBK.NewDecoder()
 	return transform.NewReader(body, decoder)
 }
 
-func Windows12522UTF8(body io.ReadCloser) io.Reader {
+func HtmlWindows12522UTF8(body io.ReadCloser) io.Reader {
 	decoder := charmap.Windows1252.NewDecoder()
 	return transform.NewReader(body, decoder)
 }
