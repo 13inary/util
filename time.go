@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+const (
+	// 避免不关注年的时间变量出现分钟的差错
+	// 1901年前使用LMT（分钟会有误差），1928年后国际天文学会正式确立时区标准CST，1949年后新中国时区统一CST
+	NotLMTYear = 1928
+)
+
+// 时间问题1：CST，处理新旧时区体系导致的误差
+// 时间问题2：8*3600，不同地域时区导致的误差
 func InitTimezone() {
 	time.Local = time.FixedZone("CST", 8*3600) // 东八区
 }
