@@ -3,6 +3,7 @@ package util
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -61,4 +62,12 @@ func TryDo(ctx context.Context, job func() (bool, error), maxTimes int) error {
 	}
 
 	return fmt.Errorf("The operation failed multiple times and has been terminated. Error : %v", err)
+}
+
+func GenRandomMil(max int64) time.Duration {
+	if max <= 0 {
+		max = 1000 // 1秒
+	}
+	//return time.Duration(min + rand.Int63n(max-min)) * time.Millisecond
+	return time.Duration(rand.Int63n(max)) * time.Millisecond
 }
