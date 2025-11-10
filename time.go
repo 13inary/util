@@ -71,3 +71,26 @@ func GenRandomMil(maxMill int64) time.Duration {
 	//return time.Duration(min + rand.Int63n(max-min)) * time.Millisecond
 	return time.Duration(rand.Int63n(maxMill)) * time.Millisecond
 }
+
+// 输入数字：20250101
+// 输出：time.Time
+// 性能比数字转字符串再转time.Time快很多
+func DateOnlyInt2Time(dateInt int) time.Time {
+	year := dateInt / 10000
+	month := (dateInt % 10000) / 100
+	day := dateInt % 100
+
+	// 这里没有数据检验，目的是为了提供性能
+	// 有检验需求的先检查数据后再调用
+
+	return time.Date(
+		year,
+		time.Month(month),
+		day,
+		0,          // 小时
+		0,          // 分钟
+		0,          // 秒
+		0,          // 纳秒
+		time.Local, // 使用时区
+	)
+}
