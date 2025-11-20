@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/csv"
 	"encoding/gob"
 	"os"
 )
@@ -77,4 +78,27 @@ func LoadFromCache[T any](cacheFile string) (T, error) {
 	defer f.Close()
 
 	return data, gob.NewDecoder(f).Decode(&data)
+}
+
+func SaveToCsv(data [][]string, csvFile string) error {
+	f, err := os.Create(csvFile)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	writer := csv.NewWriter(f)
+	defer writer.Flush()
+
+	return writer.WriteAll(data)
+}
+
+func LoadFromCsv(csvFile string) ([][]string, error) {
+	f, err := os.Open(csvFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	return csv.NewReader(f).ReadAll()
 }
