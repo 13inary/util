@@ -3,6 +3,8 @@ package util
 import (
 	"encoding/csv"
 	"encoding/gob"
+	"fmt"
+	"log"
 	"os"
 )
 
@@ -80,17 +82,42 @@ func LoadFromCache[T any](cacheFile string) (T, error) {
 	return data, gob.NewDecoder(f).Decode(&data)
 }
 
-func SaveToCsv(data [][]string, csvFile string) error {
-	f, err := os.Create(csvFile)
+func SaveToCsv(data [][]string, csvFile string, readOnly bool) error {
+	// 检查文件存在性（原子操作）
+	exists, err := FileExists(csvFile)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	if exists {
+		return fmt.Errorf("file %s already exists", csvFile)
+	}
+
+	flag := os.O_WRONLY | os.O_CREATE | os.O_TRUNC
+	// 打开文件
+	f, err := os.OpenFile(csvFile, flag, 0666)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		// 确保在设置只读前关闭文件
+		_ = f.Close()
+		if readOnly {
+			// 跨平台权限设置
+			if err := os.Chmod(csvFile, 0444); err != nil {
+				log.Printf("警告: 设置只读权限失败: %v", err)
+			}
+		}
+	}()
 
 	writer := csv.NewWriter(f)
 	defer writer.Flush()
 
-	return writer.WriteAll(data)
+	// 写入数据
+	if err := writer.WriteAll(data); err != nil {
+		_ = os.Remove(csvFile)
+		return err
+	}
+	return nil
 }
 
 func LoadFromCsv(csvFile string) ([][]string, error) {
