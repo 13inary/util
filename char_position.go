@@ -162,13 +162,16 @@ type segment struct {
 func (lu *printDiff) calculateSegments(old, new string) []segment {
 	oldRunes := []rune(old)
 	newRunes := []rune(new)
+	oldLen := len(oldRunes)
+	newLen := len(newRunes)
 	var segments []segment
 	idx := 0
 
-	for idx < len(oldRunes) || idx < len(newRunes) {
+	// 以 newRunes 为准，仅遍历 newRunes
+	for idx < newLen {
 		// 找到连续相同的部分（固定段）
 		start := idx
-		for idx < len(oldRunes) && idx < len(newRunes) && oldRunes[idx] == newRunes[idx] {
+		for idx < newLen && idx < oldLen && newRunes[idx] == oldRunes[idx] {
 			idx++
 		}
 		if idx > start {
@@ -177,10 +180,7 @@ func (lu *printDiff) calculateSegments(old, new string) []segment {
 
 		// 找到连续不同的部分（变化段）
 		start = idx
-		for idx < len(oldRunes) || idx < len(newRunes) {
-			if idx < len(oldRunes) && idx < len(newRunes) && oldRunes[idx] == newRunes[idx] {
-				break
-			}
+		for idx < newLen && (idx >= oldLen || newRunes[idx] != oldRunes[idx]) {
 			idx++
 		}
 		if idx > start {
