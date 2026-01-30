@@ -32,6 +32,18 @@ func Int2String(i int, suffix string) string {
 	return string(b)
 }
 
+func Contains(str string, keys []string) bool {
+	if str == "" || len(keys) == 0 {
+		return false
+	}
+	for _, key := range keys {
+		if strings.Contains(str, key) {
+			return true
+		}
+	}
+	return false
+}
+
 func HasPrefixs(str string, prefixs []string) bool {
 	if str == "" || len(prefixs) == 0 {
 		return false
