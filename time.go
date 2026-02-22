@@ -94,3 +94,19 @@ func DateOnlyInt2Time(dateInt int) time.Time {
 		time.Local, // 使用时区
 	)
 }
+
+// 对于Truncate()方法需要注意时区的问题的示例
+func TimeToOnlyDate(date time.Time) time.Time {
+	// 方法1
+	year, month, day := date.Date()
+	return time.Date(year, month, day, 0, 0, 0, 0, date.Location())
+
+	// 方法2，目前测试结果是有问题的
+	// return date.Truncate(time.Hour * 24).In(time.Local)
+
+	// 方法3，目前测试结果是有问题的
+	// return date.In(time.UTC).Truncate(time.Hour * 24).In(time.Local)
+
+	// 方法4（没有方法1快）
+	// return time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, date.Location())
+}
