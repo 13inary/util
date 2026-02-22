@@ -57,3 +57,19 @@ func GroupSort[T any](src []T, getGroupKey func(T) string, sortGroup func([]T, [
 	}
 	return dest
 }
+
+// GetReverseIndex 获取当前数组下标对应的元素在数据反转后的新下标
+//
+// 1.单数数组场景：
+// 元素 a b c
+// 下标 0 1 2
+// 反转 c b a
+// 位置 2 1 0
+// 2.双数数组场景：
+// 元素 a b c d
+// 下标 0 1 2 3
+// 反转 d c b a
+// 位置 3 2 1 0
+func GetReverseIndex(arrayLength int, currentIndex int) int {
+	return arrayLength - 1 - currentIndex
+}
