@@ -73,3 +73,20 @@ func GroupSort[T any](src []T, getGroupKey func(T) string, sortGroup func([]T, [
 func GetReverseIndex(arrayLength int, currentIndex int) int {
 	return arrayLength - 1 - currentIndex
 }
+
+// 将slice切成多个部分，每个部分限制最大数量为limit
+func SplitSliceByMaxLength[T any](srcSlice []T, maxLength int) [][]T {
+	sliceLen := len(srcSlice)
+	if sliceLen == 0 {
+		return [][]T{}
+	}
+	ints := make([][]T, 0, sliceLen/maxLength+1)
+	for start := 0; start < sliceLen; start += maxLength {
+		// 找到part的右边界
+		end := start + maxLength // 获取的到达end-1为止
+		end = min(end, sliceLen) // 避免越界
+		// 保存part数据
+		ints = append(ints, srcSlice[start:end])
+	}
+	return ints
+}
