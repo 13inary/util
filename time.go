@@ -73,9 +73,9 @@ func GenRandomMil(maxMill int64) time.Duration {
 }
 
 // 输入数字：20250101
-// 输出：time.Time
+// 输出：只有年月日的time.Time
 // 性能比数字转字符串再转time.Time快很多
-func DateOnlyInt2Time(dateInt int) time.Time {
+func IntDate2Time(dateInt int) time.Time {
 	year := dateInt / 10000
 	month := (dateInt % 10000) / 100
 	day := dateInt % 100
@@ -95,6 +95,11 @@ func DateOnlyInt2Time(dateInt int) time.Time {
 	)
 }
 
+func DateTimeToIntDate(date time.Time) int {
+	year, month, day := date.Date()
+	return year*10000 + int(month)*100 + day
+}
+
 // 对于Truncate()方法需要注意时区的问题的示例
 func TimeToOnlyDate(date time.Time) time.Time {
 	// 方法1
@@ -109,4 +114,15 @@ func TimeToOnlyDate(date time.Time) time.Time {
 
 	// 方法4（没有方法1快）
 	// return time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, date.Location())
+}
+
+func IsSameDate(dateA time.Time, dateB time.Time) bool {
+	aYear, aMonth, aDay := dateA.Date()
+	bYear, bMonth, bDay := dateB.Date()
+	if aYear == bYear &&
+		aMonth == bMonth &&
+		aDay == bDay {
+		return true
+	}
+	return false
 }
