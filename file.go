@@ -70,6 +70,7 @@ func SaveToCache[T any](data T, cacheFile string) error {
 }
 
 // 缓存是否过期，由外部的函数判断
+// 若文件不存在，会报错，用 if !os.IsNotExist(err) { 判断
 func LoadFromCache[T any](cacheFile string) (T, error) {
 	var data T
 
