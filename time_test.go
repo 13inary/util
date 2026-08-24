@@ -17,6 +17,7 @@ func BenchmarkIntTime(b *testing.B) {
 }
 
 // 0.2216 ns/op
+// 内存优化方案：时间戳/86400 得到偏移天数
 func BenchmarkUnixTime(b *testing.B) {
 	now := time.Now()
 
