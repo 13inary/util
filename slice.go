@@ -90,3 +90,18 @@ func SplitSliceByMaxLength[T any](srcSlice []T, maxLength int) [][]T {
 	}
 	return ints
 }
+
+// 无去重逻辑
+func MergeSlices[T any](slices ...[]T) []T {
+	total := 0
+	for _, s := range slices {
+		total += len(s)
+	}
+
+	res := make([]T, 0, total)
+	for _, s := range slices {
+		res = append(res, s...)
+	}
+
+	return res
+}
